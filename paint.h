@@ -29,6 +29,11 @@ class GLPaintContext
     void ReloadShader();
     void SaveCurrent();
 
+    void StartDrag(double xpos, double ypos);
+    void UpdateDrag(double xpos, double ypos);
+    void EndDrag();
+    void UpdateScroll(double yoff);
+
     // Static blobs
     private:
     static const char *m_shader_path;
@@ -61,6 +66,10 @@ class GLPaintContext
     bool m_shader_created;
     //// uniforms
     GLScalarUniformSet m_uniforms;
+
+    double m_drag_xpos, m_drag_ypos;
+    GLfloat m_drag_translateX, m_drag_translateY;
+    bool m_dragged;
 };
 
 #endif

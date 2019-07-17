@@ -24,9 +24,35 @@ namespace
         std::cerr << "[GLFW error] " << code << " " << description << std::endl;
     }
 
-
-    void handle_scroll()
+    void glfw_handle_pos(GLFWwindow *window, double xpos, double ypos)
     {
+        GLPaintContext *context = (GLPaintContext*)glfwGetWindowUserPointer(window);
+        context->UpdateDrag(xpos, ypos);
+    }
+
+    void glfw_handle_mouse(GLFWwindow *window, int button, int action, int mods)
+    {
+        GLPaintContext *context = (GLPaintContext*)glfwGetWindowUserPointer(window);
+        double xpos, ypos;
+        glfwGetCursorPos(window, &xpos, &ypos);
+
+        if(button == GLFW_MOUSE_BUTTON_LEFT && action==GLFW_PRESS)
+        {
+            std::cout << "start" << std::endl;
+            context->StartDrag(xpos, ypos);
+        }
+
+        if(button == GLFW_MOUSE_BUTTON_LEFT && action==GLFW_RELEASE)
+        {
+            std::cout << "end" << std::endl;
+            context->EndDrag();
+        }
+    }
+
+    void glfw_handle_scroll(GLFWwindow *window, double xoff, double yoff)
+    {
+        GLPaintContext *context = (GLPaintContext*)glfwGetWindowUserPointer(window);
+        context->UpdateScroll(yoff);
     }
 
     void glfw_handle_key(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -89,7 +115,8 @@ const char *GLPaintContext::m_stub_vert_shader =
 "}\n";
 
 GLPaintContext::GLPaintContext():
-    m_shader_created(false) 
+    m_shader_created(false),
+    m_dragged(false)
 {
     m_uniforms["aspect_ratio"] = static_cast<float>(SPHFIG_WIDTH) / SPHFIG_HEIGHT;
     m_uniforms["translateX"] = 0.0f;
@@ -128,7 +155,7 @@ void GLPaintContext::Loop()
 void GLPaintContext::InitApiContext(GLPaintContext::Ptr &instance)
 {
     // Setup GLFW window
-    //   GLFW is a libray for automatically setting up window and initializing OpenGL
+    //   GLFW is a libray for automatically setting up windows and initializing OpenGL
     //   context. It handles I/O of the window also.
     //// Init GLFW
     if(int code = glfwInit(); GLFW_TRUE != code)
@@ -153,6 +180,9 @@ void GLPaintContext::InitApiContext(GLPaintContext::Ptr &instance)
     glfwMakeContextCurrent(instance->m_window);
     glfwSetWindowUserPointer(instance->m_window, instance.get());
     glfwSetKeyCallback(instance->m_window, glfw_handle_key);
+    glfwSetMouseButtonCallback(instance->m_window, glfw_handle_mouse);
+    glfwSetCursorPosCallback(instance->m_window, glfw_handle_pos);
+    glfwSetScrollCallback(instance->m_window, glfw_handle_scroll);
 
     // Load GL extensions with GLEW
     //   GLEW is a library for automatically loading OpenGL extensions and assigning
@@ -356,4 +386,39 @@ void GLPaintContext::Draw()
         std::cerr << "glError: " << code << std::endl;
 #endif
 
+}
+
+void GLPaintContext::StartDrag(double xpos, double ypos)
+{
+    m_drag_xpos = xpos;
+    m_drag_ypos = ypos;
+    m_drag_translateX = m_uniforms["translateX"];
+    m_drag_translateY = m_uniforms["translateY"];
+    m_dragged = true;
+}
+
+void GLPaintContext::UpdateDrag(double xpos, double ypos)
+{
+    if(!m_dragged)
+    {
+        return;
+    }
+
+    m_uniforms["translateX"] = m_drag_translateX + 0.001*(xpos - m_drag_xpos);
+    m_uniforms["translateY"] = m_drag_translateY - 0.001*(ypos - m_drag_ypos);
+
+    std::cout << "(translateX, translateY) = (" <<
+        m_uniforms["translateX"] << "," << m_uniforms["translateY"] << ")" << std::endl;
+}
+
+void GLPaintContext::EndDrag()
+{
+    m_dragged = false;
+}
+
+void GLPaintContext::UpdateScroll(double yoff)
+{
+    m_uniforms["scale"] += 0.05*yoff;
+
+    std::cout << "scale = " << m_uniforms["scale"] << std::endl;
 }
