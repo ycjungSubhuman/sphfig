@@ -25,6 +25,7 @@ Check `sample_shader.frag` and `shader.frag` to see provided uniforms and attrib
 
 ## Build requirement
 
+* A C++ compiler with C++17 spec support
 * A GPU with OpenGL >= 4.6 support
 * glfw3
 * glew
@@ -33,3 +34,23 @@ Check `sample_shader.frag` and `shader.frag` to see provided uniforms and attrib
 ## Build
 
 Use `cmake` to process CMakeLists.txt and generate a project for your toolchains.
+
+### Linux
+
+Install `gcc, make, glfw3, glew, libpng, mesa` and run `cmake . && make`
+
+### Windows
+
+#### If you are using `vcpkg` package manager for Windows
+
+Install `glfw, glew, libpng` and configure vcpkg with your build system
+(see https://github.com/microsoft/vcpkg)
+
+#### If you are using VS
+
+1. Open your web browser, download `glfw3, glew, libpng`. 
+1. Install all the dependencies.
+1. Install all the dependencies of the dependencies (i.e. libzlib).
+1. Install and open `cmake-gui`. Configure to generate a VS project. 
+1. It might stop while configuring. Find all the missing variables.
+1. Open up the project. Build all.
