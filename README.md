@@ -18,8 +18,8 @@ Put a `shader.frag` file next to the executable. Edit the shader and reload to d
 
 Check `sample_shader.frag` and `shader.frag` to see provided uniforms and attributes, 
 
-* Mouse drag (left button) - translates current figure
-* Mouse scroll - modify scale of current figure
+* Mouse drag (left button) - change `translateX` and `translateY`
+* Mouse scroll - modify `scale`
 * S key - save current figure as `fig.png`
 * R key - reload shader `shader.frag`. Use this after updating the shader
 
