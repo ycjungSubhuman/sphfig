@@ -20,7 +20,7 @@ uniform float scale;
 
 /*****************************************************************************/ 
 /* Variables */
-/*****************************************************************************/ 
+/****************************************************************************/ 
 
 const vec3 color_white = vec3(1.0, 1.0, 1.0);
 const vec3 color_black = vec3(0.0, 0.0, 0.0);
@@ -136,7 +136,7 @@ vec2 cuv2tcuv(vec2 cuv)
 // converts a tcuv to a scaled tcuv (stcuv)
 vec2 tcuv2stcuv(vec2 tcuv)
 {
-    return (1./(scale))*tcuv;
+    return (1./(scale*scale))*tcuv;
 }
 
 /*****************************************************************************/ 
@@ -154,7 +154,7 @@ float smoothcut(float th, float value)
 vec4 db(float d, float width, vec4 color, vec4 base)
 {
     float aaf = 1.*fwidth(d); // antialiasing width
-    float alpha = 1.0-smoothstep(width*(1/scale)-aaf, (width+0.0010)*(1/scale), d);
+    float alpha = 1.0-smoothstep(width*(1/(scale*scale))-aaf, (width+0.0010)*(1/(scale*scale)), d);
     vec3 c = mix(base.rgb, color.rgb, alpha);
     return vec4(mix(base.rgb, c, color.a), 1.0);
 }
