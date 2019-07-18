@@ -35,17 +35,6 @@ struct Style {
     float width;
 };
 
-const Style normal_border = Style(vec4(color_white, 1.0), 0.005);
-const Style thin_border = Style(vec4(color_white, 1.0), 0.002);
-const Style ray1 = Style(vec4(color_red, 0.6), 0.003);
-const Style ray2 = Style(vec4(color_green2, 1.0), 0.0025);
-const Style ray3 = Style(vec4(color_blue, 0.4), 0.003);
-const Style normal_point = Style(vec4(color_blue, 1.0), 0.015);
-const Style small_point = Style(vec4(color_blue, 1.0), 0.008);
-const Style point2 = Style(vec4(color_green2, 1.0), 0.015);
-const Style middleline = Style(vec4(color_green, 1.0), 0.0030);
-const Style weakline = Style(vec4(color_white, 0.5), 0.003);
-
 /*****************************************************************************/ 
 /* Geometry Primitives */
 /*****************************************************************************/ 
@@ -283,6 +272,17 @@ void get_div_geometry(
     line_mid_proj_circle = 
         Segment(point_inter_linedivcircle_circle, point_div_interfovproj_top);
 }
+
+const Style normal_border = Style(vec4(color_white, 1.0), 0.005);
+const Style thin_border = Style(vec4(color_white, 1.0), 0.002);
+const Style ray1 = Style(vec4(color_red, 0.6), 0.003);
+const Style ray2 = Style(vec4(color_green2, 1.0), 0.0025);
+const Style ray3 = Style(vec4(color_blue, 0.4), 0.003);
+const Style normal_point = Style(vec4(color_blue, 1.0), 0.015);
+const Style small_point = Style(vec4(color_blue, 1.0), 0.008);
+const Style point2 = Style(vec4(color_green2, 1.0), 0.015);
+const Style middleline = Style(vec4(color_green, 1.0), 0.0030);
+const Style weakline = Style(vec4(color_white, 0.5), 0.003);
 
 vec4 draw_scene(vec2 uv)
 {
