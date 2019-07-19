@@ -411,7 +411,5 @@ vec4 draw_scene(vec2 uv)
  */
 void main()
 {
-    vec2 stcuv = tcuv2stcuv(cuv2tcuv(uv2cuv(uv)));
-    vec3 color_bg = color_white;
-    color = draw_scene(stcuv);
+    color = draw_scene(tcuv2stcuv(cuv2tcuv(uv2cuv(uv))));
 }

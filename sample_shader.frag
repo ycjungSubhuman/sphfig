@@ -17,5 +17,6 @@ uniform float scale;
 
 void main()
 {
-    color = vec4(uv.x, uv.y, 0.0, 1.0);
+    float d = sqrt(uv.x*uv.x + uv.y*uv.y);
+    color = vec4(d, d, 0.0, 1.0);
 }
